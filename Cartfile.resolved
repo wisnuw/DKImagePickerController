@@ -1,0 +1,4 @@
+github "TimOliver/TOCropViewController" "2.5.0"
+github "rs/SDWebImage" "5.0.2"
+github "wisnuw/DKPhotoGallery" "c98904b6e93d85f1e0e617996b8992c1725a0b23"
+github "zhangao0086/DKCamera" "1.6.4"

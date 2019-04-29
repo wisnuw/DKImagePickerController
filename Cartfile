@@ -1,0 +1,3 @@
+github "zhangao0086/DKCamera"
+github "wisnuw/DKPhotoGallery" "master"
+github "TimOliver/TOCropViewController" ~> 2.4
