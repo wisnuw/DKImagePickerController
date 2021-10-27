@@ -11,6 +11,7 @@
 #if SD_UIKIT
 #import <MobileCoreServices/MobileCoreServices.h>
 #endif
+#import "SDImageIOAnimatedCoderInternal.h"
 
 @interface SDCategoriesTests : SDTestCase
 
@@ -25,7 +26,8 @@
     
     // Test invalid format
     CFStringRef type = [NSData sd_UTTypeFromImageFormat:SDImageFormatUndefined];
-    expect(CFStringCompare(kUTTypePNG, type, 0)).equal(kCFCompareEqualTo);
+    expect(CFStringCompare(kSDUTTypeImage, type, 0)).equal(kCFCompareEqualTo);
+    expect([NSData sd_imageFormatFromUTType:kSDUTTypeImage]).equal(SDImageFormatUndefined);
 }
 
 - (void)test02UIImageMultiFormatCategory {
@@ -39,6 +41,8 @@
     // Test image encode PNG
     data = [image sd_imageDataAsFormat:SDImageFormatPNG];
     expect(data).notTo.beNil();
+    // Test image decode PNG
+    expect([UIImage sd_imageWithData:data scale:1 firstFrameOnly:YES]).notTo.beNil();
     // Test image encode JPEG with compressionQuality
     NSData *jpegData1 = [image sd_imageDataAsFormat:SDImageFormatJPEG compressionQuality:1];
     NSData *jpegData2 = [image sd_imageDataAsFormat:SDImageFormatJPEG compressionQuality:0.5];
@@ -56,6 +60,7 @@
     image = [UIImage sd_imageWithGIFData:data];
     expect(image).notTo.beNil();
     expect(image.sd_isAnimated).beTruthy();
+    expect(image.sd_imageFrameCount).equal(5);
 }
 
 #pragma mark - Helper

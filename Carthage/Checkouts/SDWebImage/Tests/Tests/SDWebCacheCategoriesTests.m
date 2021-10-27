@@ -31,6 +31,7 @@
                             expect(imageView.image).to.equal(image);
                             [expectation fulfill];
                         }];
+    expect(imageView.sd_imageURL).equal(originalImageURL);
     [self waitForExpectationsWithCommonTimeout];
 }
 
@@ -119,6 +120,16 @@
                                }];
     [self waitForExpectationsWithCommonTimeout];
 }
+
+- (void)testUIButtonBackgroundImageCancelCurrentImageLoad {
+    UIButton *button = [[UIButton alloc] init];
+    NSURL *originalImageURL = [NSURL URLWithString:kTestJPEGURL];
+    [button sd_setBackgroundImageWithURL:originalImageURL forState:UIControlStateNormal];
+    [button sd_cancelBackgroundImageLoadForState:UIControlStateNormal];
+    NSString *backgroundImageOperationKey = [self testBackgroundImageOperationKeyForState:UIControlStateNormal];
+    expect([button sd_imageLoadOperationForKey:backgroundImageOperationKey]).beNil();
+}
+
 #endif
 
 #if SD_MAC
@@ -189,6 +200,104 @@
     [self waitForExpectationsWithCommonTimeout];
 }
 
+- (void)testUIViewCancelCurrentImageLoad {
+    UIView *imageView = [[UIView alloc] init];
+    NSURL *originalImageURL = [NSURL URLWithString:kTestJPEGURL];
+    [SDImageCache.sharedImageCache removeImageFromDiskForKey:kTestJPEGURL];
+    [SDImageCache.sharedImageCache removeImageFromMemoryForKey:kTestJPEGURL];
+    [imageView sd_internalSetImageWithURL:originalImageURL placeholderImage:nil options:0 context:nil setImageBlock:nil progress:nil completed:nil];
+    [imageView sd_cancelCurrentImageLoad];
+    NSString *operationKey = NSStringFromClass(UIView.class);
+    expect(imageView.sd_latestOperationKey).beNil();
+    expect([imageView sd_imageLoadOperationForKey:operationKey]).beNil();
+}
+
+- (void)testUIViewCancelCurrentImageLoadWithTransition {
+    UIView *imageView = [[UIView alloc] init];
+    NSURL *firstImageUrl = [NSURL URLWithString:kTestJPEGURL];
+    NSURL *secondImageUrl = [NSURL URLWithString:kTestPNGURL];
+
+    // First, reset our caches
+    [SDImageCache.sharedImageCache removeImageFromDiskForKey:kTestJPEGURL];
+    [SDImageCache.sharedImageCache removeImageFromMemoryForKey:kTestPNGURL];
+
+    // Next, lets put our second image into memory, so that the next time
+    // we load it, it will come from memory, and thus shouldUseTransition will be NO
+    XCTestExpectation *firstLoadExpectation = [self expectationWithDescription:@"First image loaded"];
+
+    [imageView sd_internalSetImageWithURL:secondImageUrl placeholderImage:nil options:0 context:nil setImageBlock:nil progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        [firstLoadExpectation fulfill];
+    }];
+
+    [self waitForExpectations:@[firstLoadExpectation]
+                      timeout:5.0];
+
+    // Now, lets load a new image using a transition
+    XCTestExpectation *secondLoadExpectation = [self expectationWithDescription:@"Second image loaded"];
+    XCTestExpectation *transitionPreparesExpectation = [self expectationWithDescription:@"Transition prepares"];
+
+    // Build a custom transition with a completion block that
+    // we do not expect to be called, because we cancel in the
+    // middle of a transition
+    XCTestExpectation *transitionCompletionExpecation = [self expectationWithDescription:@"Transition completed"];
+    transitionCompletionExpecation.inverted = YES;
+
+    SDWebImageTransition *customTransition = [SDWebImageTransition new];
+    customTransition.duration = 1.0;
+    customTransition.prepares = ^(__kindof UIView * _Nonnull view, UIImage * _Nullable image, NSData * _Nullable imageData, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [transitionPreparesExpectation fulfill];
+    };
+    customTransition.completion = ^(BOOL finished) {
+        [transitionCompletionExpecation fulfill];
+    };
+
+    // Now, load our first image URL (maybe as part of a UICollectionView)
+    // We use a custom context to ensure a unique ImageOperationKey for every load
+    // that is requested
+    NSMutableDictionary *context = [NSMutableDictionary new];
+    context[SDWebImageContextSetImageOperationKey] = firstImageUrl.absoluteString;
+
+    imageView.sd_imageTransition = customTransition;
+    [imageView sd_internalSetImageWithURL:firstImageUrl placeholderImage:nil options:0 context:context setImageBlock:nil progress:nil completed:nil];
+    [self waitForExpectations:@[transitionPreparesExpectation] timeout:5.0];
+
+    // At this point, our transition has started, and so we cancel the load operation,
+    // perhaps as a result of a call to `prepareForReuse` in a UICollectionViewCell
+    [imageView sd_cancelCurrentImageLoad];
+
+    // Now, we update our context's imageOperationKey and URL, perhaps
+    // because of a re-use of a UICollectionViewCell. In this case,
+    // we are assigning an image URL that is already present in the
+    // memory cache
+    context[SDWebImageContextSetImageOperationKey] = secondImageUrl.absoluteString;
+    [imageView sd_internalSetImageWithURL:secondImageUrl placeholderImage:nil options:0 context:context setImageBlock:nil progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+
+        [secondLoadExpectation fulfill];
+    }];
+
+    // The original load operation's transitionCompletionExpecation should never
+    // be called (it has been inverted, above)
+    [self waitForExpectations:@[secondLoadExpectation, transitionCompletionExpecation]
+                      timeout:2.0];
+}
+
+- (void)testUIViewCancelCallbackWithError {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"UIView internalSetImageWithURL cancel callback error"];
+    
+    UIView *imageView = [[UIView alloc] init];
+    NSURL *originalImageURL = [NSURL URLWithString:kTestJPEGURL];
+    [SDImageCache.sharedImageCache removeImageFromDiskForKey:kTestJPEGURL];
+    [SDImageCache.sharedImageCache removeImageFromMemoryForKey:kTestJPEGURL];
+    [imageView sd_internalSetImageWithURL:originalImageURL placeholderImage:nil options:0 context:nil setImageBlock:nil progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        expect(error).notTo.beNil();
+        expect(error.code).equal(SDWebImageErrorCancelled);
+        [expectation fulfill];
+    }];
+    [imageView sd_cancelCurrentImageLoad];
+    
+    [self waitForExpectationsWithCommonTimeout];
+}
+
 - (void)testUIViewImageProgressKVOWork {
     XCTestExpectation *expectation = [self expectationWithDescription:@"UIView imageProgressKVO failed"];
     UIView *view = [[UIView alloc] init];
@@ -213,8 +322,8 @@
     [self waitForExpectationsWithCommonTimeout];
 }
 
-- (void)testUIViewTransitionWork {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"UIView transition does not work"];
+- (void)testUIViewTransitionFromNetworkWork {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"UIView transition from network does not work"];
     
     // Attach a window, or CALayer will not submit drawing
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
@@ -243,6 +352,50 @@
                  placeholderImage:placeholder
                           options:SDWebImageForceTransition
                         completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                            __strong typeof(wimageView) simageView = imageView;
+                            // Delay to let CALayer commit the transition in next runloop
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kMinDelayNanosecond), dispatch_get_main_queue(), ^{
+                                // Check current view contains layer animation
+                                NSArray *animationKeys = simageView.layer.animationKeys;
+                                expect(animationKeys.count).beGreaterThan(0);
+                                [expectation fulfill];
+                            });
+                        }];
+    
+    [self waitForExpectationsWithCommonTimeout];
+}
+
+- (void)testUIViewTransitionFromDiskWork {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"UIView transition from disk does not work"];
+    
+    // Attach a window, or CALayer will not submit drawing
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    imageView.sd_imageTransition = SDWebImageTransition.fadeTransition;
+    imageView.sd_imageTransition.duration = 1;
+    
+#if SD_UIKIT
+    [self.window addSubview:imageView];
+#else
+    imageView.wantsLayer = YES;
+    [self.window.contentView addSubview:imageView];
+#endif
+    
+    NSData *imageData = [NSData dataWithContentsOfFile:[self testJPEGPath]];
+    UIImage *placeholder = [[UIImage alloc] initWithData:imageData];
+    
+    // Ensure the image is cached in disk but not memory
+    [SDImageCache.sharedImageCache removeImageFromMemoryForKey:kTestJPEGURL];
+    [SDImageCache.sharedImageCache removeImageFromDiskForKey:kTestJPEGURL];
+    [SDImageCache.sharedImageCache storeImageDataToDisk:imageData forKey:kTestJPEGURL];
+    
+    NSURL *originalImageURL = [NSURL URLWithString:kTestJPEGURL];
+    __weak typeof(imageView) wimageView = imageView;
+    [imageView sd_setImageWithURL:originalImageURL
+                 placeholderImage:placeholder
+                          options:SDWebImageFromCacheOnly // Ensure we queired from disk cache
+                        completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                            [SDImageCache.sharedImageCache removeImageFromMemoryForKey:kTestJPEGURL];
+                            [SDImageCache.sharedImageCache removeImageFromDiskForKey:kTestJPEGURL];
                             __strong typeof(wimageView) simageView = imageView;
                             // Delay to let CALayer commit the transition in next runloop
                             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kMinDelayNanosecond), dispatch_get_main_queue(), ^{
@@ -311,6 +464,32 @@
     [self waitForExpectationsWithCommonTimeout];
 }
 
+- (void)testUIViewOperationKeyContextWorks {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"UIView operation key context should pass through"];
+    
+    UIView *view = [[UIView alloc] init];
+    NSURL *originalImageURL = [NSURL URLWithString:kTestJPEGURL];
+    SDWebImageManager *customManager = [[SDWebImageManager alloc] initWithCache:SDImageCachesManager.sharedManager loader:SDImageLoadersManager.sharedManager];
+    customManager.optionsProcessor = [SDWebImageOptionsProcessor optionsProcessorWithBlock:^SDWebImageOptionsResult * _Nullable(NSURL * _Nullable url, SDWebImageOptions options, SDWebImageContext * _Nullable context) {
+        // expect manager does not exist, avoid retain cycle
+        expect(context[SDWebImageContextCustomManager]).beNil();
+        // expect operation key to be the image view class
+        expect(context[SDWebImageContextSetImageOperationKey]).equal(NSStringFromClass(view.class));
+        return [[SDWebImageOptionsResult alloc] initWithOptions:options context:context];
+    }];
+    [view sd_internalSetImageWithURL:originalImageURL
+                    placeholderImage:nil
+                             options:0
+                             context:@{SDWebImageContextCustomManager: customManager}
+                       setImageBlock:nil
+                            progress:nil
+                           completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithCommonTimeout];
+}
+
 #pragma mark - Helper
 - (UIWindow *)window {
     if (!_window) {
@@ -328,5 +507,11 @@
     NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
     return [testBundle pathForResource:@"TestImage" ofType:@"jpg"];
 }
+
+#if SD_UIKIT
+- (NSString *)testBackgroundImageOperationKeyForState:(UIControlState)state {
+    return [NSString stringWithFormat:@"UIButtonBackgroundImageOperation%lu", (unsigned long)state];
+}
+#endif
 
 @end

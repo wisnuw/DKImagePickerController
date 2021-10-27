@@ -3,17 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59620D3D2729222D000358AF /* SDWebImage.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59620D3C2729222D000358AF /* SDWebImage.xcframework */; };
 		9C565E32216B43DA00A16B22 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E2E216B43DA00A16B22 /* Base.lproj */; };
 		9C565E33216B43DA00A16B22 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E2F216B43DA00A16B22 /* Images.xcassets */; };
 		9C565E34216B43DA00A16B22 /* zh-Hans.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E30216B43DA00A16B22 /* zh-Hans.lproj */; };
 		9C565E35216B43DA00A16B22 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E31216B43DA00A16B22 /* en.lproj */; };
 		9C565E39216B44F400A16B22 /* DKPhotoGallery.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */; };
 		9C8BA70A215B2BC0005267E7 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8BA709215B2BC0005267E7 /* ImageIO.framework */; };
-		9C90C060215E371300314C91 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C90C05E215E371300314C91 /* SDWebImage.framework */; };
 		9CDF249B215A46F400DF2C79 /* DKPhotoGallery.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CDF2499215A46F400DF2C79 /* DKPhotoGallery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9CDF24C1215A471600DF2C79 /* DKPhotoPreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF249F215A471500DF2C79 /* DKPhotoPreviewFactory.swift */; };
 		9CDF24C2215A471600DF2C79 /* DKPhotoGalleryTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDF24A1215A471500DF2C79 /* DKPhotoGalleryTransitionController.swift */; };
@@ -59,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		59620D3C2729222D000358AF /* SDWebImage.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SDWebImage.xcframework; path = ../../Build/SDWebImage.xcframework; sourceTree = "<group>"; };
 		9C08E2A5215B6280003BA0DA /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		9C17CC0E215B39C1001A6BCA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C565E26216B42AE00A16B22 /* DKPhotoGallery.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DKPhotoGallery.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,7 +69,6 @@
 		9C565E30216B43DA00A16B22 /* zh-Hans.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "zh-Hans.lproj"; path = "DKPhotoGallery/Resource/Resources/zh-Hans.lproj"; sourceTree = SOURCE_ROOT; };
 		9C565E31216B43DA00A16B22 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = DKPhotoGallery/Resource/Resources/en.lproj; sourceTree = SOURCE_ROOT; };
 		9C8BA709215B2BC0005267E7 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		9C90C05E215E371300314C91 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		9CDF248E215A46CE00DF2C79 /* DKPhotoGallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DKPhotoGallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CDF2499215A46F400DF2C79 /* DKPhotoGallery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DKPhotoGallery.h; sourceTree = "<group>"; };
 		9CDF249F215A471500DF2C79 /* DKPhotoPreviewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPhotoPreviewFactory.swift; sourceTree = "<group>"; };
@@ -109,13 +109,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C90C060215E371300314C91 /* SDWebImage.framework in Frameworks */,
 				9CF878DF215B2F91003F2667 /* MobileCoreServices.framework in Frameworks */,
 				9CF878DD215B2F85003F2667 /* WebKit.framework in Frameworks */,
 				9CF878DB215B2F7C003F2667 /* AVKit.framework in Frameworks */,
 				9CF878D9215B2F74003F2667 /* Photos.framework in Frameworks */,
 				9CF878D7215B2F6D003F2667 /* AssetsLibrary.framework in Frameworks */,
 				9C8BA70A215B2BC0005267E7 /* ImageIO.framework in Frameworks */,
+				59620D3D2729222D000358AF /* SDWebImage.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,7 +159,7 @@
 		9CDF249D215A46FD00DF2C79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9C90C05E215E371300314C91 /* SDWebImage.framework */,
+				59620D3C2729222D000358AF /* SDWebImage.xcframework */,
 				9CF878DE215B2F91003F2667 /* MobileCoreServices.framework */,
 				9CF878DC215B2F85003F2667 /* WebKit.framework */,
 				9CF878DA215B2F7C003F2667 /* AVKit.framework */,
@@ -313,7 +313,7 @@
 		9CDF2485215A46CE00DF2C79 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "Ao Zhang";
 				TargetAttributes = {
 					9C565E25216B42AE00A16B22 = {
@@ -420,7 +420,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DKPhotoGalleryBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao0086.DKPhotoGalleryBundle;
 				PRODUCT_NAME = DKPhotoGallery;
@@ -440,7 +440,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DKPhotoGalleryBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhangao0086.DKPhotoGalleryBundle;
 				PRODUCT_NAME = DKPhotoGallery;
@@ -476,6 +476,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -540,6 +541,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -590,7 +592,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -625,7 +627,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
