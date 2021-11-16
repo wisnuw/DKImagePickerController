@@ -1,0 +1,19 @@
+{
+  "commitish" : "1.6.4",
+  "iOS" : [
+    {
+      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
+      "hash" : "513333834d6aeaf76e875f31d2041a32ec00a1dc99bae336cc2cc0a38492efde",
+      "name" : "DKCamera",
+      "container" : "DKCamera.xcframework",
+      "identifier" : "ios-arm64"
+    },
+    {
+      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
+      "hash" : "de66686feb05ae868f20d30ed8dcf31141bf8fe33eaeb2b4f9f1aed8b94a954b",
+      "name" : "DKCamera",
+      "container" : "DKCamera.xcframework",
+      "identifier" : "ios-arm64_x86_64-simulator"
+    }
+  ]
+}

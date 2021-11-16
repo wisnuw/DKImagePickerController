@@ -1,0 +1,19 @@
+{
+  "commitish" : "c98904b6e93d85f1e0e617996b8992c1725a0b23",
+  "iOS" : [
+    {
+      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
+      "hash" : "3d7d18b06e6687606d97368c2004f25852663a260bf9f56381456d822eb35aa1",
+      "name" : "DKPhotoGallery",
+      "container" : "DKPhotoGallery.xcframework",
+      "identifier" : "ios-arm64_x86_64-simulator"
+    },
+    {
+      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
+      "hash" : "1af63312ea70e1ed71ba087a94cb6fae9d1edbb9d4b3300c0bf1d4a2c80ba0ca",
+      "name" : "DKPhotoGallery",
+      "container" : "DKPhotoGallery.xcframework",
+      "identifier" : "ios-arm64"
+    }
+  ]
+}

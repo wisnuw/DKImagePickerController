@@ -1,0 +1,31 @@
+{
+  "commitish" : "2.5.0",
+  "iOS" : [
+    {
+      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
+      "hash" : "e648f6e3ed59f1c13bdd4c546a4a41901179f69fb1ff544d379c32dce0856cff",
+      "name" : "CropViewController",
+      "container" : "CropViewController.xcframework",
+      "identifier" : "ios-arm64_armv7"
+    },
+    {
+      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
+      "hash" : "ffbdfc2ff27b7fd8c93d1c58cb2a6385d2c243351e4d51c42e6662d6ec5272ab",
+      "name" : "CropViewController",
+      "container" : "CropViewController.xcframework",
+      "identifier" : "ios-arm64_i386_x86_64-simulator"
+    },
+    {
+      "hash" : "01851cf84f823cbe3bbed9e66f01bf4010f98fdca81c21e154d8a54b8ea1a931",
+      "name" : "TOCropViewController",
+      "container" : "TOCropViewController.xcframework",
+      "identifier" : "ios-arm64_i386_x86_64-simulator"
+    },
+    {
+      "hash" : "8c535223586c691d234548ba94674cc6959b2fbd101c24928237a47eef96b782",
+      "name" : "TOCropViewController",
+      "container" : "TOCropViewController.xcframework",
+      "identifier" : "ios-arm64_armv7"
+    }
+  ]
+}

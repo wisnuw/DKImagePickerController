@@ -3,7 +3,7 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
-build/
+#build/
 DerivedData/
 
 ## Various settings
@@ -25,8 +25,8 @@ xcuserdata/
 ## Obj-C/Swift specific
 *.hmap
 *.ipa
-*.dSYM.zip
-*.dSYM
+#*.dSYM.zip
+#*.dSYM
 
 ## Playgrounds
 timeline.xctimeline
@@ -53,7 +53,7 @@ playground.xcworkspace
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
 
-Carthage/Build
+#Carthage/Build
 
 # fastlane
 #
