@@ -32,7 +32,13 @@ open class DKImageExtensionGallery: DKImageBaseExtension, DKPhotoGalleryDelegate
             self.group = group
             
             if context.imagePickerController.inline {
-                UIApplication.shared.keyWindow!.rootViewController!.present(photoGallery: gallery)
+                
+                if #available(iOS 13, *) {
+                    let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+                    window?.rootViewController!.present(photoGallery: gallery)
+                }else{
+                   UIApplication.shared.keyWindow!.rootViewController!.present(photoGallery: gallery)
+                }
             } else {
                 groupDetailVC.present(photoGallery: gallery)
             }

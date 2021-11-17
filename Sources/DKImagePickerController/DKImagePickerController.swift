@@ -246,7 +246,14 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
                                      completion: (() -> Swift.Void)? = nil) {
         var targetVC: UIViewController = self
         if self.inline {
-            targetVC = UIApplication.shared.keyWindow!.rootViewController!
+            
+            if #available(iOS 13, *) {
+                let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+                targetVC  =   window!.rootViewController!
+            }else{
+                targetVC = UIApplication.shared.keyWindow!.rootViewController!
+            }
+           
         }
         
         while let presentedViewController = targetVC.presentedViewController {
@@ -262,8 +269,16 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
     
     @objc open override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         if self.inline {
-            UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true,
-                                                                        completion: completion)
+            
+            if #available(iOS 13, *) {
+                let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+                window!.rootViewController!.dismiss(animated: true,
+                                                    completion: completion)
+            }else{
+                UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true,
+                                                                            completion: completion)
+            }
+          
         } else {
             super.dismiss(animated: true, completion: completion)
         }

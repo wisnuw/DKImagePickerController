@@ -93,15 +93,15 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
             strongSelf.galleryDelegate?.photoGallery?(strongSelf, didShow: index)
         }
         
-        #if swift(>=4.2)
+#if swift(>=4.2)
         contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel,
                                                                      target: self,
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
-        #else
+#else
         contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
                                                                      target: self,
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
-        #endif
+#endif
         
         contentVC.dataSource = self
         contentVC.delegate = self
@@ -111,8 +111,17 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         
         let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
         let key = String(data: keyData, encoding: String.Encoding.ascii)!
-        if let statusBar = UIApplication.shared.value(forKey: key) as? UIView {
-            self.statusBar = statusBar
+        
+        
+        if #available(iOS 13.0, *) {
+            let tag = 38482458385
+            if let statusBar = UIApplication.shared.keyWindow?.viewWithTag(tag) {
+                self.statusBar = statusBar
+            }else{
+                let statusBar = UIView(frame: UIApplication.shared.statusBarFrame) statusBar.tag = tag UIApplication.shared.keyWindow?.addSubview(statusBar) self.statusBar = statusBar
+            }
+        }else{
+            self.statusBar = UIApplication.shared.value(forKey: "statusBar") as? UIView
         }
     }
     

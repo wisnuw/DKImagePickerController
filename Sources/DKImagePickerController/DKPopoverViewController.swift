@@ -17,8 +17,11 @@ fileprivate extension UIView {
 open class DKPopoverViewController: UIViewController {
     
     @objc open class func popoverViewController(_ viewController: UIViewController, fromView: UIView, arrowColor: UIColor = UIColor.white) {
-        let window = UIApplication.shared.keyWindow!
         
+        var window = UIApplication.shared.keyWindow!
+        if #available(iOS 13, *) {
+            window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first!
+        }
         let popoverViewController = DKPopoverViewController()
         
         popoverViewController.arrowColor = arrowColor
@@ -30,7 +33,10 @@ open class DKPopoverViewController: UIViewController {
     }
     
     @objc open class func dismissPopoverViewController() {
-        let window = UIApplication.shared.keyWindow!
+        var window = UIApplication.shared.keyWindow!
+        if #available(iOS 13, *) {
+            window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first!
+        }
         
         for vc in window.rootViewController!.children {
             if vc is DKPopoverViewController {
