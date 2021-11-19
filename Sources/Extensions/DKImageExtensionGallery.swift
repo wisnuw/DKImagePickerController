@@ -32,13 +32,7 @@ open class DKImageExtensionGallery: DKImageBaseExtension, DKPhotoGalleryDelegate
             self.group = group
             
             if context.imagePickerController.inline {
-                
-                if #available(iOS 13, *) {
-                    let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-                    window?.rootViewController!.present(photoGallery: gallery)
-                }else{
-                   UIApplication.shared.keyWindow!.rootViewController!.present(photoGallery: gallery)
-                }
+                UIApplication.shared.keyWindow!.rootViewController!.present(photoGallery: gallery)
             } else {
                 groupDetailVC.present(photoGallery: gallery)
             }
@@ -77,7 +71,7 @@ open class DKImageExtensionGallery: DKImageBaseExtension, DKPhotoGalleryDelegate
         gallery.finishedBlock = { dismissIndex, dismissItem in
             let cellIndex = groupDetailVC.adjustAssetIndex(dismissIndex)
             let cellIndexPath = IndexPath(row: cellIndex, section: 0)
-            groupDetailVC.scrollIndexPathToVisible(cellIndexPath)
+            groupDetailVC.scroll(to: cellIndexPath)
             
             return groupDetailVC.thumbnailImageView(for: cellIndexPath)
         }
@@ -87,7 +81,7 @@ open class DKImageExtensionGallery: DKImageBaseExtension, DKPhotoGalleryDelegate
     
     // MARK: - DKPhotoGalleryDelegate
     
-    open var backItem = UIBarButtonItem(image: DKImagePickerControllerResource.photoGalleryBackArrowImage(),
+    open lazy var backItem = UIBarButtonItem(image: DKImagePickerControllerResource.photoGalleryBackArrowImage(),
                                            style: .plain,
                                            target: self,
                                            action: #selector(dismissGallery))

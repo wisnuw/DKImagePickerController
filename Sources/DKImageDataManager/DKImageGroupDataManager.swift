@@ -30,6 +30,7 @@ public class DKImageGroupDataManagerConfiguration: NSObject, NSCopying {
     /// The types of PHAssetCollection to display in the picker.
     public var assetGroupTypes: [PHAssetCollectionSubtype] = [
         .smartAlbumUserLibrary,
+        .smartAlbumVideos,
         .smartAlbumFavorites,
         .albumRegular
     ]
@@ -184,7 +185,7 @@ open class DKImageGroupDataManager: DKImageBaseManager, PHPhotoLibraryChangeObse
     }
     
     open func makeDKAssetGroup(with collection: PHAssetCollection) -> DKAssetGroup {
-        let assetGroup = DKAssetGroup(groupId: collection.localIdentifier ?? "")
+        let assetGroup = DKAssetGroup(groupId: collection.localIdentifier)
 
         self.updateGroup(assetGroup, collection: collection)
 
