@@ -578,16 +578,16 @@ open class DKAssetGroupDetailVC: UIViewController,
             }
         }
 
+         /*
         if let imagePickerController = imagePickerController,
             imagePickerController.UIDelegate.needsToShowPreviewOnLongPress() {
 
             cell.longPressBlock = {
-                /*[weak self, weak cell] in
+                 [weak self, weak cell] in
                  guard let strongSelf = self, let strongCell = cell else { return }
                  strongSelf.showGallery(from: strongCell)
-                 */
             }
-        }
+        } */
     }
 
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource methods

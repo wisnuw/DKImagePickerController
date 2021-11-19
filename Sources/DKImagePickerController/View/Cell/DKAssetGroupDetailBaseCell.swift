@@ -26,7 +26,6 @@ open class DKAssetGroupDetailBaseCell: UICollectionViewCell, DKAssetGroupCellIte
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(gestureRecognizer:)))
         longPressGesture.minimumPressDuration = 0.3
         self.addGestureRecognizer(longPressGesture)
@@ -55,7 +54,7 @@ open class DKAssetGroupDetailBaseCell: UICollectionViewCell, DKAssetGroupCellIte
     
     @objc func longPress(gestureRecognizer: UIGestureRecognizer) {
         if gestureRecognizer.state == .began {
-            self.longPressBlock?()
+            //self.longPressBlock?()
         }
     }
 
