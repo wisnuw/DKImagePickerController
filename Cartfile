@@ -1,4 +1,4 @@
 github "zhangao0086/DKCamera" == 1.6.7
 github "wisnuw/DKPhotoGallery" "master"
-github "TimOliver/TOCropViewController" == 2.6.0 
+github "TimOliver/TOCropViewController" == 2.5.0 
 github "rs/SDWebImage" == 5.12.1 
