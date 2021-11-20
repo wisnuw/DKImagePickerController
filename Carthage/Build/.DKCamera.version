@@ -1,19 +1,28 @@
 {
-  "commitish" : "1.6.4",
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "1.6.7",
   "iOS" : [
     {
       "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
-      "hash" : "513333834d6aeaf76e875f31d2041a32ec00a1dc99bae336cc2cc0a38492efde",
+      "hash" : "a7a635ecaf2a2a32cab216a1e67b46d8fbd789b109e564f1ab51ca4260dce122",
       "name" : "DKCamera",
       "container" : "DKCamera.xcframework",
-      "identifier" : "ios-arm64"
+      "identifier" : "ios-arm64_i386_x86_64-simulator"
     },
     {
       "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
-      "hash" : "de66686feb05ae868f20d30ed8dcf31141bf8fe33eaeb2b4f9f1aed8b94a954b",
+      "hash" : "d275798035e7b8fa3d1699f6d54489a75d1351754ce5e6582ced3d833883330a",
       "name" : "DKCamera",
       "container" : "DKCamera.xcframework",
-      "identifier" : "ios-arm64_x86_64-simulator"
+      "identifier" : "ios-arm64_armv7"
     }
   ]
 }
