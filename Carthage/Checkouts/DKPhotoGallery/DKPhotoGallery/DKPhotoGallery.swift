@@ -93,15 +93,15 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
             strongSelf.galleryDelegate?.photoGallery?(strongSelf, didShow: index)
         }
         
-#if swift(>=4.2)
+        #if swift(>=4.2)
         contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel,
                                                                      target: self,
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
-#else
+        #else
         contentVC.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel,
                                                                      target: self,
                                                                      action: #selector(DKPhotoGallery.dismissGallery))
-#endif
+        #endif
         
         contentVC.dataSource = self
         contentVC.delegate = self
@@ -109,20 +109,14 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         
         contentVC.footerView = self.footerView
         
-        let keyData = Data(bytes: [0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
-        let key = String(data: keyData, encoding: String.Encoding.ascii)!
-        
-        
-        if #available(iOS 13.0, *) {
-            let tag = 38482458385
-            if let statusBar = UIApplication.shared.keyWindow?.viewWithTag(tag) {
+        if #available(iOS 13.0, *) {} else {
+            let keyData = Data([0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x42, 0x61, 0x72])
+            let key = String(data: keyData, encoding: String.Encoding.ascii)!
+            if let statusBar = UIApplication.shared.value(forKey: key) as? UIView {
                 self.statusBar = statusBar
-            }else{
-                let statusBar = UIView(frame: UIApplication.shared.statusBarFrame) statusBar.tag = tag UIApplication.shared.keyWindow?.addSubview(statusBar) self.statusBar = statusBar
             }
-        }else{
-            self.statusBar = UIApplication.shared.value(forKey: "statusBar") as? UIView
         }
+
     }
     
     private lazy var doSetupOnce: () -> Void = {
@@ -152,18 +146,12 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         super.viewWillAppear(animated)
         
         self.doSetupOnce()
-        
-        UIApplication.shared.statusBarStyle = DKPhotoGallery._preferredStatusBarStyle
-        
         self.modalPresentationCapturesStatusBarAppearance = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        UIApplication.shared.statusBarStyle = self.defaultStatusBarStyle
-        
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
