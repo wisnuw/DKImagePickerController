@@ -8,6 +8,9 @@
 
 #import "SDImageLoader.h"
 
+/**
+ A loaders manager to manage multiple loaders
+ */
 @interface SDImageLoadersManager : NSObject <SDImageLoader>
 
 /**
@@ -28,7 +31,7 @@
 - (void)addLoader:(nonnull id<SDImageLoader>)loader;
 
 /**
- Remove a image loader in the loaders array.
+ Remove an image loader in the loaders array.
  
  @param loader loader
  */

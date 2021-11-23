@@ -8,16 +8,21 @@
 
 #import "SDWebImageCompat.h"
 
-// This category is provided to easily write cross-platform(AppKit/UIKit) code. For common usage, see `UIImage+Metadata.h`.
-
 #if SD_MAC
 
+/**
+ This category is provided to easily write cross-platform(AppKit/UIKit) code. For common usage, see `UIImage+Metadata.h`.
+ */
 @interface NSImage (Compatibility)
 
 /**
 The underlying Core Graphics image object. This will actually use `CGImageForProposedRect` with the image size.
  */
 @property (nonatomic, readonly, nullable) CGImageRef CGImage;
+/**
+ The underlying Core Image data. This will actually use `bestRepresentationForRect` with the image size to find the `NSCIImageRep`.
+ */
+@property (nonatomic, readonly, nullable) CIImage *CIImage;
 /**
  The scale factor of the image. This wil actually use `bestRepresentationForRect` with image size and pixel size to calculate the scale factor. If failed, use the default value 1.0. Should be greater than or equal to 1.0.
  */
@@ -36,6 +41,16 @@ The underlying Core Graphics image object. This will actually use `CGImageForPro
  @return The image object
  */
 - (nonnull instancetype)initWithCGImage:(nonnull CGImageRef)cgImage scale:(CGFloat)scale orientation:(CGImagePropertyOrientation)orientation;
+
+/**
+ Initializes and returns an image object with the specified Core Image object. The representation is `NSCIImageRep`.
+ 
+ @param ciImage A Core Image image object
+ @param scale The image scale factor
+ @param orientation The orientation of the image data
+ @return The image object
+ */
+- (nonnull instancetype)initWithCIImage:(nonnull CIImage *)ciImage scale:(CGFloat)scale orientation:(CGImagePropertyOrientation)orientation;
 
 /**
  Returns an image object with the scale factor. The representation is created from the image data.

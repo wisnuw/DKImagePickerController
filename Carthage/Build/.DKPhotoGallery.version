@@ -1,19 +1,11 @@
 {
-  "commitish" : "c98904b6e93d85f1e0e617996b8992c1725a0b23",
+  "commitish" : "bc368f8a778eff785a95a848d522879355ee343c",
   "iOS" : [
     {
-      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
-      "hash" : "3d7d18b06e6687606d97368c2004f25852663a260bf9f56381456d822eb35aa1",
+      "hash" : "fc5736ab79478dd7c7b51dbbba9b25b56375752d6031fc3554c6354eb1332634",
       "name" : "DKPhotoGallery",
-      "container" : "DKPhotoGallery.xcframework",
-      "identifier" : "ios-arm64_x86_64-simulator"
-    },
-    {
-      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)",
-      "hash" : "1af63312ea70e1ed71ba087a94cb6fae9d1edbb9d4b3300c0bf1d4a2c80ba0ca",
-      "name" : "DKPhotoGallery",
-      "container" : "DKPhotoGallery.xcframework",
-      "identifier" : "ios-arm64"
+      "linking" : "dynamic",
+      "swiftToolchainVersion" : "5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)"
     }
   ]
 }

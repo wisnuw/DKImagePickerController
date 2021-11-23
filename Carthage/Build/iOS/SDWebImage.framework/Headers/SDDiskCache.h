@@ -9,7 +9,9 @@
 #import "SDWebImageCompat.h"
 
 @class SDImageCacheConfig;
-// A protocol to allow custom disk cache used in SDImageCache.
+/**
+ A protocol to allow custom disk cache used in SDImageCache.
+ */
 @protocol SDDiskCache <NSObject>
 
 // All of these method are called from the same global queue to avoid blocking on main queue and thread-safe problem. But it's also recommend to ensure thread-safe yourself using lock or other ways.
@@ -51,6 +53,26 @@
  @param key    The key with which to associate the value. If nil, this method has no effect.
  */
 - (void)setData:(nullable NSData *)data forKey:(nonnull NSString *)key;
+
+/**
+ Returns the extended data associated with a given key.
+ This method may blocks the calling thread until file read finished.
+ 
+ @param key A string identifying the data. If nil, just return nil.
+ @return The value associated with key, or nil if no value is associated with key.
+ */
+- (nullable NSData *)extendedDataForKey:(nonnull NSString *)key;
+
+/**
+ Set extended data with a given key.
+ 
+ @discussion You can set any extended data to exist cache key. Without override the exist disk file data.
+ on UNIX, the common way for this is to use the Extended file attributes (xattr)
+ 
+ @param extendedData The extended data (pass nil to remove).
+ @param key The key with which to associate the value. If nil, this method has no effect.
+*/
+- (void)setExtendedData:(nullable NSData *)extendedData forKey:(nonnull NSString *)key;
 
 /**
  Removes the value of the specified key in the cache.
@@ -97,9 +119,13 @@
 
 @end
 
-// The built-in disk cache
+/**
+ The built-in disk cache.
+ */
 @interface SDDiskCache : NSObject <SDDiskCache>
-
+/**
+ Cache Config object - storing all kind of settings.
+ */
 @property (nonatomic, strong, readonly, nonnull) SDImageCacheConfig *config;
 
 - (nonnull instancetype)init NS_UNAVAILABLE;
